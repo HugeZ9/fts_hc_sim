@@ -1,0 +1,8 @@
+{
+	"name": "fts_hc_sim_worker",
+	"version": "1.0.0",
+	"dependencies": {
+		"restify": "^4.3.0",
+		"walk": "^2.3.9"
+	}
+}
