@@ -5,7 +5,7 @@ let cur_seq;
 exports.start = (seq_root_path, seq_id) => {
     return new Promise ((resolve, reject) => {
         try{
-            cur_seq = require(path.resolve(seq_root_path, seq_id));
+            cur_seq = require(path.resolve(seq_root_path, seq_id)) (net_if);
             if(cur_seq === null) {
                 reject("not_found");
             } else {
@@ -17,7 +17,7 @@ exports.start = (seq_root_path, seq_id) => {
         }
     });
 }
-exports.stop = () => {
+exports.stop = (seq_root_path, seq_id) => {
     return new Promise( (resolve, reject) => {
         if(cur_seq !== null && cur_seq !== undefined) {
             cur_seq.stop();

@@ -21,7 +21,7 @@ function resp_start (req, res, next) {
 }
 function resp_stop (req, res, next) {
     console.log('receive a request stop: ' + req.params.seq_id);
-    sim_worker.stop()
+    sim_worker.stop(m_root_path + 'seq/', + req.params.seq_id)
         .then((ret_msg) => {
             res.send(map_err(ret_msg), 'stop: ' + req.params.seq_id + ' with result: ' + ret_msg)})
         .catch((err) => res.send(map_err(err), err))
