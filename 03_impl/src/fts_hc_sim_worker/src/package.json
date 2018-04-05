@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"dependencies": {
 		"restify": "^4.3.0",
+		"socketcan": "^2.2.2",
 		"walk": "^2.3.9"
 	}
 }

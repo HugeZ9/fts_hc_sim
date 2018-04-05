@@ -1,12 +1,15 @@
 const m_seq_name = 'seq0001';
 let m_net_if;
-exports.start = (cb) => {
-	console.log(m_seq_name + ' start!');
+function thisSeq(socket) {
+    this.socket = socket;
 }
-exports.stop = (cb) => {
-	console.log(m_seq_name + ' stop!');
-}
-
-module.exports = (net_if) => {
-	m_net_if = net_if;
+thisSeq.prototype.start = function(cb) {
+    console.log(m_seq_name + ' start!');
 };
+thisSeq.prototype.stop = function(cb) {
+    console.log(m_seq_name + ' stop!');
+};
+
+module.exports = (socket) => {
+    return new thisSeq(socket);
+}
