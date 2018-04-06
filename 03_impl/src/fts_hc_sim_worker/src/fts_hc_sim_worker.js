@@ -50,6 +50,8 @@ exports.stop = (seq_root_path, seq_id, can_channel) => {
         var seq = seqs[seq_path];
         if(seq !== null && seq !== undefined) {
             seq.stop();
+            //destroy this sequence
+            delete seq;
             seqs[seq_path] = null;
             resolve("OK");
         } else {
