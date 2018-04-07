@@ -2,8 +2,14 @@
 	"name": "fts_hc_sim_worker",
 	"version": "1.0.0",
 	"dependencies": {
+		"nan": "^2.10.0",
+		"node-gyp": "^3.6.2",
 		"restify": "^4.3.0",
+		"sequence": "^3.0.0",
 		"socketcan": "^2.2.2",
+		"struct": "^0.0.12",
+        "nan": "^2.6.1",
+        "node-gyp": "^3.6.0",
 		"walk": "^2.3.9"
 	}
 }

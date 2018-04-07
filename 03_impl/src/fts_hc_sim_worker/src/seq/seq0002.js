@@ -1,4 +1,4 @@
-const m_seq_name = 'seq0001';
+const m_seq_name = 'seq0002';
 var Struct = require('struct');
 var Sequence = exports.Sequence || require('sequence').Sequence
     , sequence = Sequence.create()
@@ -7,14 +7,25 @@ var Sequence = exports.Sequence || require('sequence').Sequence
 var Msg = Struct()
             .word8('id')
             .word16Ule('msg32_2');
-function delay(t, me) {
+
+/*
+*
+*
+*   utilities (delay, ...) implement
+*/
+function delay(t, val) {
     return new Promise(function(resolve) {
         setTimeout(function() {
-            resolve(me);
-            me = null;
+            resolve(val);
         }, t);
     });
 }
+
+/*
+*
+*
+*   sequence implement
+*/
 function seq1(me) {
     Msg.allocate();
     var proxy = Msg.fields;
@@ -26,13 +37,17 @@ function seq1(me) {
                     });
     return new Promise((resolve, reject) => {
         resolve(me);
-        me = null;
     });
 }
 
 function seq2(me) {
     console.log("SEQ2 ==> " + me);
-    return delay(9000, me);
+    // declare event handler
+    return new Promise ((resolve) => {
+        me.socket.addListener('onMessage', (msg) => {
+            resolve(me);
+        });
+    });
 }
 function seq3(me) {
     console.log("SEQ3 ==> " + me);
@@ -46,12 +61,15 @@ function seq3(me) {
                     });
     return new Promise((resolve, reject) => {
         resolve(me);
-        me = null;
     });
 }
 
+/*
+*
+*    thisSeq implement
+*
+*/
 function thisSeq(socket) {
-    console.log(m_seq_name + ' constructor');
     this.socket = socket;
     this.socket.addListener("onMessage", this.recv_msg);
     this.promise = new Promise ( (resolve, reject) => {
@@ -68,6 +86,8 @@ thisSeq.prototype.start = function(cb) {
     this.promise
         .then(seq1)
         .then(seq2)
+        .then(seq3)
+        .then(seq2)
         .then(seq3);
 };
 
@@ -76,9 +96,10 @@ thisSeq.prototype.recv_msg = (msg) => {
 }
 thisSeq.prototype.stop = function(cb) {
     console.log(m_seq_name + ' stop!');
-    delete this.promise;
-    this.promise = null;
     this.socket.stop();
+    delete this.promise;
     this.socket = null;
+    this.promise = null;
 };
+
 module.exports = thisSeq;
