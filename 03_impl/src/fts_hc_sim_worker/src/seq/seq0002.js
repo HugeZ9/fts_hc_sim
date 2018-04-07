@@ -96,10 +96,10 @@ thisSeq.prototype.recv_msg = (msg) => {
 }
 thisSeq.prototype.stop = function(cb) {
     console.log(m_seq_name + ' stop!');
-    this.socket.stop();
     delete this.promise;
-    this.socket = null;
     this.promise = null;
+    this.socket.stop();
+    this.socket = null;
 };
 
 module.exports = thisSeq;
